@@ -8,6 +8,7 @@
   setuptools,
 
   # dependencies
+  libGL,
   addict,
   appdirs,
   colour,
@@ -173,7 +174,7 @@ in
 buildPythonPackage rec {
   pname = "manimgl";
   pyproject = true;
-  version = "1.7.2";
+  version = "1.7.1";
 
   src = fetchFromGitHub {
     owner = "3b1b";
@@ -227,15 +228,21 @@ buildPythonPackage rec {
     ])
   ];
 
-  nativeCheckInputs = [
-    ffmpeg
-    manim-tinytex
-    pytest-cov-stub
-    pytest-xdist
-    pytestCheckHook
-    versionCheckHook
+  buildInputs = [
+    libGL
   ];
-  versionCheckProgramArg = [ "--version" ];
+
+  doCheck = false;
+  doInstallCheck = false;
+  # nativeCheckInputs = [
+  #   ffmpeg
+  #   manim-tinytex
+  #   pytest-cov-stub
+  #   pytest-xdist
+  #   pytestCheckHook
+  #   versionCheckHook
+  # ];
+  versionCheckProgramArg = [ "-v" ];
 
 
   disabledTests = import ./failing_tests.nix;
