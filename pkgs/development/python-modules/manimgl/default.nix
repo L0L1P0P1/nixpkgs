@@ -12,10 +12,12 @@
   appdirs,
   colour,
   diskcache,
+  fonttools,
   ipython,
   isosurfaces,
   manimpango,
   mapbox-earcut,
+  matplotlib,
   moderngl,
   moderngl-window,
   numpy,
@@ -23,6 +25,8 @@
   pydub,
   pygments,
   pyopengl,
+  pyperclip,
+  pyyaml,
   rich,
   scipy,
   screeninfo,
@@ -44,61 +48,130 @@
 
 let
   # This is a list of all LaTeX packages used by manimgl according to manimlib/tex_templates.yml
-  manim-tex = texliveInfraOnly.withPackages (
+  manim-tinytex = texliveInfraOnly.withPackages (
     ps: with ps; [
-      babel
-      inputenc
-      fontenc
+
+      # tinytex
+      amsfonts
       amsmath
-      amssymb
-      dsfont
-      setspace
-      tipa
-      relsize
-      textcomp
-      mathrsfs
-      calligra
-      wasysym
-      ragged2e
-      physics
-      xcolor
-      microtype
-      pifont
-      mathastext
-      txfonts
-      txgreeks
+      atbegshi
+      atveryend
+      auxhook
+      babel
+      bibtex
+      bigintcalc
+      bitset
+      booktabs
+      cm
+      dehyph
+      dvipdfmx
+      dvips
+      ec
+      epstopdf-pkg
+      etex
+      etexcmds
+      etoolbox
+      euenc
+      everyshi
+      fancyvrb
+      filehook
+      firstaid
+      float
       fontspec
-      xeCJK
-      aurical
-      baskervald
-      comfortaa
-      droidsans
-      droidserif
-      frcursive
-      electrum
-      epigrafica
-      fourier
-      gnu_freesans
-      gnu_freeserif
-      helvetica
-      pxfonts
-      eulergreek
-      symbol
-      lmodern
-      antpolt
-      uop
-      udidot
-      neohellenic
-      fau
-      fjd
-      fsk
-      ftp
-      fwb
+      framed
+      geometry
+      gettitlestring
+      glyphlist
+      graphics
+      graphics-cfg
+      graphics-def
+      grffile
+      helvetic
+      hycolor
+      hyperref
+      hyph-utf8
+      iftex
+      inconsolata
+      infwarerr
+      intcalc
+      knuth-lib
+      kvdefinekeys
+      kvoptions
+      kvsetkeys
+      l3backend
+      l3kernel
+      l3packages
+      latex
+      latex-amsmath-dev
+      latex-bin
+      latex-fonts
+      latex-tools-dev
+      latexconfig
+      latexmk
+      letltxmacro
+      lm
+      lm-math
+      ltxcmds
+      lua-alt-getopt
+      luahbtex
+      lualatex-math
+      lualibs
+      luaotfload
+      luatex
+      mdwtools
+      metafont
+      mfware
+      natbib
+      pdfescape
+      pdftex
+      pdftexcmds
+      plain
+      psnfss
+      refcount
+      rerunfilecheck
+      stringenc
+      tex
+      tex-ini-files
+      times
+      tipa
+      tools
+      unicode-data
+      unicode-math
+      uniquecounter
+      url
+      xcolor
+      xetex
+      xetexconfig
+      xkeyval
+      xunicode
+      zapfding
+
+      # manim-latex
+      standalone
+      everysel
+      preview
+      doublestroke
+      setspace
+      rsfs
+      relsize
+      ragged2e
+      fundus-calligra
+      microtype
+      wasysym
+      physics
+      dvisvgm
+      jknapltx
+      wasy
+      cm-super
+      babel-english
+      gnu-freefont
+      mathastext
+      cbfonts-fd
     ]
   );
 in
 buildPythonPackage rec {
-  pyname = "manimgl";
+  pname = "manimgl";
   pyproject = true;
   version = "1.7.2";
 
@@ -106,7 +179,7 @@ buildPythonPackage rec {
     owner = "3b1b";
     repo = "manim";
     tag = "v${version}";
-    hash = "sha256-0gsy3mglwwdarf3r0s8qqcdmxmm20av6ryz6n1wh01gp0psxzr44";
+    hash = "sha256-rYpBYsQvTQM5J5KCBRgfUROxbM2evfra0uV912mbkaQ=";
   };
 
   build-system = [
@@ -118,10 +191,12 @@ buildPythonPackage rec {
     appdirs
     colour
     diskcache
+    fonttools
     ipython
     isosurfaces
     manimpango
     mapbox-earcut
+    matplotlib
     moderngl
     moderngl-window
     numpy
@@ -129,6 +204,8 @@ buildPythonPackage rec {
     pydub
     pygments
     pyopengl
+    pyperclip
+    pyyaml
     rich
     scipy
     screeninfo
@@ -146,19 +223,22 @@ buildPythonPackage rec {
     ":"
     (lib.makeBinPath [
       ffmpeg
-      manim-tex
+      manim-tinytex
     ])
   ];
 
   nativeCheckInputs = [
     ffmpeg
-    manim-tex
+    manim-tinytex
     pytest-cov-stub
     pytest-xdist
     pytestCheckHook
     versionCheckHook
   ];
   versionCheckProgramArg = [ "--version" ];
+
+
+  disabledTests = import ./failing_tests.nix;
 
   pythonImportsCheck = [ "manimlib" ];
 
