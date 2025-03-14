@@ -46,7 +46,6 @@
   versionCheckHook,
 }:
 
-
 let
   # This is a list of all LaTeX packages used by manimgl according to manimlib/tex_templates.yml
   manim-tinytex = texliveInfraOnly.withPackages (
@@ -261,6 +260,6 @@ buildPythonPackage rec {
     changelog = "https://3b1b.github.io/manim/development/changelog.html";
     homepage = "https://github.com/3b1b/manim";
     license = lib.licenses.mit;
-    maintainers = [];
+    maintainers = [ ];
   };
 }
