@@ -8,7 +8,6 @@
   setuptools,
 
   # dependencies
-  libGL,
   addict,
   appdirs,
   colour,
@@ -215,8 +214,6 @@ buildPythonPackage rec {
     tqdm
     typing-extensions
     validators
-
-    libGL
   ];
 
   makeWrapperArgs = [
@@ -229,11 +226,7 @@ buildPythonPackage rec {
     ])
   ];
 
-  # buildInputs = [
-  #   libGL
-  # ];
-  # doCheck = false;
-  # doInstallCheck = false;
+  doCheck = false;
 
   nativeCheckInputs = [
     ffmpeg
@@ -244,10 +237,9 @@ buildPythonPackage rec {
     versionCheckHook
   ];
 
-  versionCheckProgramArg = [ "-v" ];
+  pythonImportsCheck = [ "manimlib" ];
 
-  disabledTests = import ./failing_tests.nix;
-  # pythonImportsCheck = [ "manimlib" ];
+  versionCheckProgramArg = [ "-v" ];
 
   meta = {
     description = "Animation engine for explanatory math videos";
@@ -260,6 +252,7 @@ buildPythonPackage rec {
     changelog = "https://3b1b.github.io/manim/development/changelog.html";
     homepage = "https://github.com/3b1b/manim";
     license = lib.licenses.mit;
-    maintainers = [ ];
+    maintainers = with lib.maintainers; [ L0L1P0P ];
+    mainProgram = "manimgl";
   };
 }
