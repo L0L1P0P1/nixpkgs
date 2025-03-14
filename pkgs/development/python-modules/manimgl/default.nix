@@ -216,6 +216,8 @@ buildPythonPackage rec {
     tqdm
     typing-extensions
     validators
+
+    libGL
   ];
 
   makeWrapperArgs = [
@@ -228,26 +230,25 @@ buildPythonPackage rec {
     ])
   ];
 
-  buildInputs = [
-    libGL
+  # buildInputs = [
+  #   libGL
+  # ];
+  # doCheck = false;
+  # doInstallCheck = false;
+
+  nativeCheckInputs = [
+    ffmpeg
+    manim-tinytex
+    pytest-cov-stub
+    pytest-xdist
+    pytestCheckHook
+    versionCheckHook
   ];
 
-  doCheck = false;
-  doInstallCheck = false;
-  # nativeCheckInputs = [
-  #   ffmpeg
-  #   manim-tinytex
-  #   pytest-cov-stub
-  #   pytest-xdist
-  #   pytestCheckHook
-  #   versionCheckHook
-  # ];
   versionCheckProgramArg = [ "-v" ];
 
-
   disabledTests = import ./failing_tests.nix;
-
-  pythonImportsCheck = [ "manimlib" ];
+  # pythonImportsCheck = [ "manimlib" ];
 
   meta = {
     description = "Animation engine for explanatory math videos";
