@@ -169,16 +169,17 @@ let
     ]
   );
 in
-buildPythonPackage rec {
+buildPythonPackage {
   pname = "manimgl";
   pyproject = true;
-  version = "1.7.1";
+  version = "1.7.2";
 
+  # Using hash rev because the tarball for the tag v1.7.2 gives the source to 1.7.1
   src = fetchFromGitHub {
     owner = "3b1b";
     repo = "manim";
-    tag = "v${version}";
-    hash = "sha256-rYpBYsQvTQM5J5KCBRgfUROxbM2evfra0uV912mbkaQ=";
+    rev = "0c69ab6a32d4193f03ba9a604278eb3ce9699518";
+    hash = "sha256-NPfChSYXD25yd0lgBLOQSyy+ONuNSAVB+hPAdn8G7Ss=";
   };
 
   build-system = [
@@ -236,8 +237,6 @@ buildPythonPackage rec {
     pytestCheckHook
     versionCheckHook
   ];
-
-  pythonImportsCheck = [ "manimlib" ];
 
   versionCheckProgramArg = [ "-v" ];
 
